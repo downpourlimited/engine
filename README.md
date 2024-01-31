@@ -1,2 +1,2 @@
-# engine
-the Downpour game engine, for web browsers
+# The Downpour HTML engine
+
