@@ -2,6 +2,11 @@
 
 Hello, welcome to the Downpour HTML engine! This is a small "game engine" which takes a data.js file and converts it into a working HTML page with multiple "pages" that can be naviagted between, each containing a set of images, text and other objects that can have various styles applied to them. This data.js file is expected to be made with [the Downpour app](https://downpour.games).
 
+## How to play a game
+Open index.html in a web browser, either from a file browser or online
+
+## How to make a game
+
 - The easiest way to use this is to use the Downpour app, make a game, sign up for an account, and then press the upload button. This will host your game on [downpour.games](https://downpour.games), and will not require you to think about code or web hosting at all.
 - The second easiest way to use this is to use the Downpour app, make a game and then press the export button. This will give you a zip file containing the game, all assets used, and a version of the Downpour engine. You can then host this anywhere that will accept a folder of files that can be served statically (Github, Neocities and itch.io all come to mind, as does basically any web server)
 - The more complicated ways involve modifying either the data.js file or the index.html file by hand. That's presumably why you're here.
