@@ -277,7 +277,6 @@ SOFTWARE.
     }
 
     addEventListener("popstate", popstate);
-
     function popstate(event) {
         var queryParams = new URLSearchParams(window.location.search);
         if (queryParams.has("p")) {
@@ -294,7 +293,10 @@ SOFTWARE.
         }
     }
     const replayButton = document.getElementById("replayButton");
-    replayButton.addEventListener("click", () => { goToPage(data.initial_page) });
+    replayButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        goToPage(data.initial_page);
+    });
 
 
     window.addEventListener("resize", setPageScale);
@@ -730,7 +732,10 @@ SOFTWARE.
                 if (link.to.startsWith("#")) {
                     let strippedTo = link.to.substring(1);
                     link_element.href = `?p=${strippedTo}`;
-                    link_element.addEventListener("click", (e) => goToPage(strippedTo, e));
+                    link_element.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        goToPage(strippedTo, e);
+                    });
                 }
                 else {
                     link_element.href = link.to;
