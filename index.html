@@ -799,7 +799,13 @@ SOFTWARE.
             var rand = Math.random() * cum;
             for (var i = 0; i < randomTo.length; i++) {
                 if (weights[i] >= rand) {
-                    window.open(randomTo[i].to, "_self");
+                    if (randomTo[i].to.startsWith("#")) {
+                        let strippedTo = randomTo[i].to.substring(1);
+                        goToPage(strippedTo);
+                    }
+                    else {
+                        window.open(randomTo[i].to, "_self");
+                    }
                     return;
                 }
             }
