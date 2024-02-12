@@ -17,6 +17,8 @@ There is a constant `LOCAL`, which controls some of the logic depending on wheth
 If you want to have nice social sharing images, it's suggested you add edit the following section, and insert it in index.html where it says `<!-- social sharing section -->`:
 
 ```html
+
+    <meta name="description" content="Description">
     <meta property="og:title" content="Game title" />
     <meta property="og:url" content="https://example.com/downpourgame" />
     <meta property="og:image" content="https://example.com/downpourgame/media/cover.jpg" />
