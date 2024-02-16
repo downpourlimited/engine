@@ -4,6 +4,8 @@
 <!--
     Downpour HTML engine, for rendering Downpour games that are using v16 of the data format
 
+License below applies to everything except the contents of the `data` variable. That belongs to the user.
+
 MIT License
 
 Copyright (c) 2024 Downpour Limited
@@ -80,6 +82,7 @@ SOFTWARE.
             width: fit-content;
             transform-origin: top left;
 
+            touch-action: manipulation;
         }
 
         #credits {
@@ -170,10 +173,16 @@ SOFTWARE.
             position: absolute;
             display: block;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
             filter: url(#filter);
             /*overflow: hidden;*/
             text-decoration: none;
+
+            -webkit-touch-callout: none;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+
+            /* fix Safari rendering bug https://graffino.com/til/how-to-fix-filter-blur-performance-issue-in-safari */
+            transform: translate3d(0, 0, 0);
         }
 
         .clickable {
@@ -228,14 +237,15 @@ SOFTWARE.
 
 </body>
 
-<script src="data.js"></script>
+
+{{{gamedata}}}
 <script type="text/javascript">
 
     if (data.format_version != 16) {
         console.error(`Trying to load gameplay data with version ${data.format_version}, which is not 16`);
     }
 
-    const LOCAL = true;
+    const LOCAL = false;
 
     if (LOCAL) {
         document.title = data.name ?? "";
@@ -576,6 +586,7 @@ SOFTWARE.
 
             media_element = document.createElement("img");
             media_element.classList.add("link-asset");
+            media_element.draggable = false;
             if (LOCAL) {
                 media_element.src = "media/" + asset.path;
             }
@@ -718,6 +729,9 @@ SOFTWARE.
         page_div.style.width = `${page.width}px`;
         page_div.style.height = `${page.height}px`;
 
+        //needed so that touch-action: manipulation; applies to non-clickable areas
+        page_div.addEventListener('click', () => { })
+
         setPageScale();
 
 
@@ -747,6 +761,7 @@ SOFTWARE.
             link_element.style.top = link.y + "px";
             link_element.style.width = link.w + "px";
             link_element.style.height = link.h + "px";
+            link_element.draggable = false;
 
             renderLink(link, link_element);
 
