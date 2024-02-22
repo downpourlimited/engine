@@ -35,6 +35,10 @@ SOFTWARE.
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <link rel="icon" href="https://downpour.games/favicon.ico" sizes="32x32">
+    <link rel="icon" href="https://downpour.games/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="https://downpour.games/apple-touch-icon.png">
+
     <title>A Downpour game</title>
 
     <!-- social sharing section -->
@@ -237,15 +241,14 @@ SOFTWARE.
 
 </body>
 
-
-{{{gamedata}}}
+<script src="data.js"></script>
 <script type="text/javascript">
 
     if (data.format_version != 16) {
         console.error(`Trying to load gameplay data with version ${data.format_version}, which is not 16`);
     }
 
-    const LOCAL = false;
+    const LOCAL = true;
 
     if (LOCAL) {
         document.title = data.name ?? "";
