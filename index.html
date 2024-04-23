@@ -244,8 +244,8 @@ SOFTWARE.
 <script src="data.js"></script>
 <script type="text/javascript">
 
-    if (data.format_version != 16) {
-        console.error(`Trying to load gameplay data with version ${data.format_version}, which is not 16`);
+    if (data.format_version != 17) {
+        console.error(`Trying to load gameplay data with version ${data.format_version}, which is not 17`);
     }
 
     const LOCAL = true;
@@ -745,7 +745,14 @@ SOFTWARE.
                 link_element.addEventListener("click", (e) => goToRandom(link, e));
                 link_element.classList.add("clickable");
             }
-            else if (link.to != null) {
+            else if (link.to == "!blocker") {
+                // do nothing, but block clicks
+            }
+            else if (link.to === null || link.to === "") {
+                //doesn't link anywhere, doesn't block clicks
+                link_element.style.pointerEvents = "none";
+            }
+            else {
                 if (link.to.startsWith("#")) {
                     let strippedTo = link.to.substring(1);
                     link_element.href = `?p=${strippedTo}`;
