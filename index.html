@@ -928,45 +928,33 @@ SOFTWARE.
     }
 
     const fontPaths =
-        (LOCAL) ? {
-            "Anybody": [{ src: 'local(Anybody), url("https://downpour-static.b-cdn.net/fonts/woff2/Anybody.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff2/Anybody.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Anybody.ttf")' }],
-            "Epilogue": [
-                { src: 'local(Epilogue), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue2.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Epilogue.ttf")', desc: { style: "normal" } },
-                { src: 'local(Epilogue), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue-Italic2.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Epilogue-Italic.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Epilogue-Italic.ttf")', desc: { style: "italic" } }
-            ],
-            "Gluten": [{ src: 'local(Gluten), url("https://downpour-static.b-cdn.net/fonts/woff2/Gluten.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Gluten.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Gluten.ttf")' }],
-            "Handjet": [{ src: 'local(Handjet), url("https://downpour-static.b-cdn.net/fonts/woff2/Handjet.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Handjet.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Handjet.ttf")' }],
-            "Hepta Slab": [{ src: 'local(Hepta Slab), url("https://downpour-static.b-cdn.net/fonts/woff2/HeptaSlab.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/HeptaSlab.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/HeptaSlab.ttf")' }],
-            "Recursive": [{ src: 'local(Recursive), url("https://downpour-static.b-cdn.net/fonts/woff2/Recursive.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Recursive.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Recursive.ttf")' }],
-            "Sono": [{ src: 'local(Sono), url("https://downpour-static.b-cdn.net/fonts/woff2/Sono.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Sono.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Sono.ttf")' }],
-            "Source Serif": [
-                { src: 'local(Source Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/SourceSerif.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/SourceSerif.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/SourceSerif.ttf")', desc: { style: "normal" } },
-                { src: 'local(Source Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/SourceSerif-Italic.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/SourceSerif-Italic.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/SourceSerif-Italic.ttf")', desc: { style: "italic" } }
-            ],
-            "Public Sans": [
-                { src: 'local(Public Sans), url("https://downpour-static.b-cdn.net/fonts/woff2/PublicSans.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/PublicSans.ttf")', desc: { style: "normal" } },
-                { src: 'local(Public Sans), url("https://downpour-static.b-cdn.net/fonts/woff2/PublicSans-Italic.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/PublicSans-Italic.ttf")', desc: { style: "italic" } }
-            ],
-        } : {
-            "Anybody": [{ src: 'local(Anybody), url("https://downpour-static.b-cdn.net/fonts/woff2/Anybody.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff2/Anybody.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Anybody.ttf")' }],
-            "Epilogue": [
-                { src: 'local(Epilogue), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue2.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Epilogue.ttf")', desc: { style: "normal" } },
-                { src: 'local(Epilogue), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue-Italic2.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Epilogue-Italic.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Epilogue-Italic.ttf")', desc: { style: "italic" } }
-            ],
-            "Gluten": [{ src: 'local(Gluten), url("https://downpour-static.b-cdn.net/fonts/woff2/Gluten.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Gluten.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Gluten.ttf")' }],
-            "Handjet": [{ src: 'local(Handjet), url("https://downpour-static.b-cdn.net/fonts/woff2/Handjet.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Handjet.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Handjet.ttf")' }],
-            "Hepta Slab": [{ src: 'local(Hepta Slab), url("https://downpour-static.b-cdn.net/fonts/woff2/HeptaSlab.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/HeptaSlab.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/HeptaSlab.ttf")' }],
-            "Recursive": [{ src: 'local(Recursive), url("https://downpour-static.b-cdn.net/fonts/woff2/Recursive.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Recursive.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Recursive.ttf")' }],
-            "Sono": [{ src: 'local(Sono), url("https://downpour-static.b-cdn.net/fonts/woff2/Sono.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Sono.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Sono.ttf")' }],
-            "Source Serif": [
-                { src: 'local(Source Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/SourceSerif.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/SourceSerif.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/SourceSerif.ttf")', desc: { style: "normal" } },
-                { src: 'local(Source Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/SourceSerif-Italic.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/SourceSerif-Italic.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/SourceSerif-Italic.ttf")', desc: { style: "italic" } }
-            ],
-            "Public Sans": [
-                { src: 'local(Public Sans), url("https://downpour-static.b-cdn.net/fonts/woff2/PublicSans.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/PublicSans.ttf")', desc: { style: "normal" } },
-                { src: 'local(Public Sans), url("https://downpour-static.b-cdn.net/fonts/woff2/PublicSans-Italic.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/PublicSans-Italic.ttf")', desc: { style: "italic" } }
-            ],
-        };
+    {
+        "Anybody": [{ src: 'local(Anybody), url("https://downpour-static.b-cdn.net/fonts/woff2/Anybody.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff2/Anybody.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Anybody.ttf")' }],
+        "Epilogue": [
+            { src: 'local(Epilogue), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue2.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Epilogue.ttf")', desc: { style: "normal" } },
+            { src: 'local(Epilogue), url("https://downpour-static.b-cdn.net/fonts/woff2/Epilogue-Italic2.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Epilogue-Italic.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Epilogue-Italic.ttf")', desc: { style: "italic" } }
+        ],
+        "Gluten": [{ src: 'local(Gluten), url("https://downpour-static.b-cdn.net/fonts/woff2/Gluten.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Gluten.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Gluten.ttf")' }],
+        "Handjet": [{ src: 'local(Handjet), url("https://downpour-static.b-cdn.net/fonts/woff2/Handjet.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Handjet.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Handjet.ttf")' }],
+        "Hepta Slab": [{ src: 'local(Hepta Slab), url("https://downpour-static.b-cdn.net/fonts/woff2/HeptaSlab.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/HeptaSlab.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/HeptaSlab.ttf")' }],
+        "Recursive": [{ src: 'local(Recursive), url("https://downpour-static.b-cdn.net/fonts/woff2/Recursive.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Recursive.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Recursive.ttf")' }],
+        "Sono": [{ src: 'local(Sono), url("https://downpour-static.b-cdn.net/fonts/woff2/Sono.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/Sono.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/Sono.ttf")' }],
+        "Source Serif": [
+            { src: 'local(Source Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/SourceSerif.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/SourceSerif.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/SourceSerif.ttf")', desc: { style: "normal" } },
+            { src: 'local(Source Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/SourceSerif-Italic.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/woff/SourceSerif-Italic.woff") format(woff), url("https://downpour-static.b-cdn.net/fonts/ttf/SourceSerif-Italic.ttf")', desc: { style: "italic" } }
+        ],
+        "Public Sans": [
+            { src: 'local(Public Sans), url("https://downpour-static.b-cdn.net/fonts/woff2/PublicSans.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/PublicSans.ttf")', desc: { style: "normal" } },
+            { src: 'local(Public Sans), url("https://downpour-static.b-cdn.net/fonts/woff2/PublicSans-Italic.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/PublicSans-Italic.ttf")', desc: { style: "italic" } }
+        ],
+        "Nyght Serif": [
+            { src: 'local(Nyght Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/NyghtVariable.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/NyghtVariable.ttf")', desc: { style: "normal" } },
+            { src: 'local(Nyght Serif), url("https://downpour-static.b-cdn.net/fonts/woff2/NyghtItalicVariable.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/NyghtItalicVariable.ttf")', desc: { style: "italic" } }
+        ],
+        "Shantell Sans": [
+            { src: 'local(Shantell Sans), url("https://downpour-static.b-cdn.net/fonts/woff2/ShantellSans.woff2") format(woff2), url("https://downpour-static.b-cdn.net/fonts/ttf/ShantellSans.ttf")', },
+        ],
+    };
 
     function loadFonts(data) {
         let fontNames = new Set();
