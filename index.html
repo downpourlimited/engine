@@ -636,9 +636,7 @@ SOFTWARE.
                 }
             }
 
-            //you can only have a solid background if it's empty
             link_element.style.backgroundColor = link.image.bg_c;
-
 
 
             var filter = "";
@@ -694,7 +692,7 @@ SOFTWARE.
             }
 
             //font variation axes, and their defaults
-            const axes = { "wght": 400, 'ital': 0, 'wdth': 100, 'opsz': 20, 'MONO': 0, 'ELSH': 2, 'CASL': 0, 'slnt': 0 };
+            const axes = { "wght": 400, 'ital': 0, 'wdth': 100, 'opsz': 20, 'MONO': 0, 'ELSH': 2, 'CASL': 0, 'slnt': 0, 'INFM': 0, 'BNCE': 0 };
             // use specified axis, or the default. string format like: `'ital' 0.345, 'wght' 900`
             text_element.style.fontVariationSettings = Object.keys(axes).map((a) => `'${a}' ${link.text[a] ?? axes[a]}`).join(", ");
 
@@ -702,6 +700,29 @@ SOFTWARE.
             text_element.style.transform = `translate(${link.text.spacing * 0.5 ?? 0}em,0px)`;
 
 
+            let shadows = [];
+            let drawGlowShadow = (link.text.s1_r > 0 && parseColor(link.text.s1_c).alpha > 0);
+            let drawDropShadow = (link.text.s2_d > 0 && parseColor(link.text.s2_c).alpha > 0);
+            if (drawGlowShadow) {
+                // glow shadow is visible
+                shadows.push(`${link.text.s1_c} 0 0 ${link.text.s1_r * link.text.size}px`);
+            }
+
+            if (drawDropShadow) {
+                let x = link.text.s2_d * Math.cos(link.text.s2_a ?? Math.PI * 0.25) * link.text.size;
+                let y = link.text.s2_d * Math.sin(link.text.s2_a ?? Math.PI * 0.25) * link.text.size;
+
+                shadows.push(`${link.text.s2_c} ${x}px ${y}px 0`);
+
+                if (drawGlowShadow) {
+                    // glow shadow for the drop shadow
+                    shadows.push(`${link.text.s2_c} ${x}px ${y}px ${link.text.s1_r * link.text.size}px`);
+                }
+            }
+            text_element.style.textShadow = shadows.join(",");
+
+
+            link_element.style.backgroundColor = link.text.b_c;
             link_element.appendChild(text_element);
         }
         else {
