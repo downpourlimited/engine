@@ -223,6 +223,20 @@ SOFTWARE.
             border-width: 0;
             border-radius: 4px;
         }
+
+        .comment-placeholder {
+            font-family: 'IBM Plex Sans Condensed', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-style: italic;
+            text-align: center;
+            border-radius: 4px;
+            background-color: #F0F0FF;
+            color: #353783;
+            display: grid;
+            align-items: center;
+            height: 100%;
+            padding: 5%;
+
+        }
     </style>
 </head>
 
@@ -745,12 +759,21 @@ SOFTWARE.
         }
         else if (link.type === "comments") {
             const comment_url = makeCommentUrl(link, true);
+            if (LOCAL || comment_url == null) {
 
-            const comment_iframe = document.createElement("iframe");
-            comment_iframe.style.width = "100%";
-            comment_iframe.style.height = "100%";
-            comment_iframe.src = comment_url;
-            link_element.appendChild(comment_iframe);
+                const comment_placeholder = document.createElement("div");
+                comment_placeholder.classList.add("comment-placeholder");
+                comment_placeholder.textContent = "Comments only work when the game is uploaded to downpour.games";
+                link_element.appendChild(comment_placeholder);
+            }
+            else {
+
+                const comment_iframe = document.createElement("iframe");
+                comment_iframe.style.width = "100%";
+                comment_iframe.style.height = "100%";
+                comment_iframe.src = comment_url;
+                link_element.appendChild(comment_iframe);
+            }
         }
         else {
             console.error(`Unknown link type ${link.type}`);
@@ -761,18 +784,15 @@ SOFTWARE.
     }
 
     function makeCommentUrl(link, iframe = false) {
-        const { username, slug } = window.location.pathname.match(/^\/~(?<username>[A-Za-z0-9][A-Za-z0-9_\-]{0,29})\/(?<slug>[A-Za-z0-9\-]+)\/?$/).groups;
+        const match = window.location.pathname.match(/^\/~(?<username>[A-Za-z0-9][A-Za-z0-9_\-]{0,29})\/(?<slug>[A-Za-z0-9\-]+)\/?$/);
+        if (match === null) {
+            // probably local! or we can't parse the url
+            return null;
+        }
+        const { username, slug } = match.groups;
         const comment_block_id = link.comments.id;
 
-        if (username == null || slug == null) {
-            console.error("Can't find username & slug to load comments");
-        }
-        if (comment_block_id == null) {
-            console.error("Can't find comment_block_id to load comments");
-        }
         return `${window.location.origin}/comments/~${username}/${slug}/${comment_block_id}${iframe ? "/iframe" : ""}`;
-
-
     }
 
     function loadPage(pageId) {
@@ -805,11 +825,8 @@ SOFTWARE.
 
             var link_element = document.createElement((link.to || link.type == "comments") ? "a" : "div");
             if (link.type == "comments") {
-                //this doesn't do much, because the iframe eats the clicks
-                link_element.addEventListener("click", (e) => {
-                    window.location = makeCommentUrl(link);
-                });
-                link_element.classList.add("clickable");
+                //the iframe handles the click
+                link_element.style.cursor = "default";
             }
             else if (link.to == "!random") {
                 link_element.addEventListener("click", (e) => goToRandom(link, e));
