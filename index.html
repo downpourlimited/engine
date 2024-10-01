@@ -2,7 +2,7 @@
 <html lang="en">
 
 <!--
-    Downpour HTML engine, for rendering Downpour games that are using v16 of the data format
+    Downpour HTML engine, for rendering Downpour games that are using v17 of the data format
 
 License below applies to everything except the contents of the `data` variable. That belongs to the user.
 
@@ -104,18 +104,29 @@ SOFTWARE.
             align-items: end;
             gap: 10px;
             text-align: center;
+            align-items: center;
         }
 
 
         .downpour-icon,
         .downpour-icon a,
         .downpour-icon a:visited {
-            height: 25px;
-            width: 25px;
             color: #ffffff;
             flex-shrink: 0;
+
+            text-decoration: none;
+
+            gap: 8px;
+            /*padding-bottom: 2px;*/
+            display: flex;
+            align-items: center;
         }
 
+        .downpour-icon svg {
+
+            height: 25px;
+            width: 25px;
+        }
 
 
         .replay-icon,
@@ -141,6 +152,8 @@ SOFTWARE.
             display: flex;
             gap: 8px;
             padding-bottom: 2px;
+
+            align-items: center;
         }
 
         #author {
@@ -204,6 +217,11 @@ SOFTWARE.
             color: black;
             text-decoration: none;
             overflow-wrap: break-word;
+        }
+
+        iframe {
+            border-width: 0;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -725,10 +743,34 @@ SOFTWARE.
             link_element.style.backgroundColor = link.text.b_c;
             link_element.appendChild(text_element);
         }
+        else if (link.type === "comments") {
+            const comment_url = makeCommentUrl(link, true);
+
+            const comment_iframe = document.createElement("iframe");
+            comment_iframe.style.width = "100%";
+            comment_iframe.style.height = "100%";
+            comment_iframe.src = comment_url;
+            link_element.appendChild(comment_iframe);
+        }
         else {
             console.error(`Unknown link type ${link.type}`);
         }
 
+
+
+    }
+
+    function makeCommentUrl(link, iframe = false) {
+        const { username, slug } = window.location.pathname.match(/^\/~(?<username>[A-Za-z0-9][A-Za-z0-9_\-]{0,29})\/(?<slug>[A-Za-z0-9\-]+)\/?$/).groups;
+        const comment_block_id = link.comments.id;
+
+        if (username == null || slug == null) {
+            console.error("Can't find username & slug to load comments");
+        }
+        if (comment_block_id == null) {
+            console.error("Can't find comment_block_id to load comments");
+        }
+        return `${window.location.origin}/comments/~${username}/${slug}/${comment_block_id}${iframe ? "/iframe" : ""}`;
 
 
     }
@@ -761,8 +803,15 @@ SOFTWARE.
 
         for (const link of page.links) {
 
-            var link_element = document.createElement(link.to ? "a" : "div");
-            if (link.to == "!random") {
+            var link_element = document.createElement((link.to || link.type == "comments") ? "a" : "div");
+            if (link.type == "comments") {
+                //this doesn't do much, because the iframe eats the clicks
+                link_element.addEventListener("click", (e) => {
+                    window.location = makeCommentUrl(link);
+                });
+                link_element.classList.add("clickable");
+            }
+            else if (link.to == "!random") {
                 link_element.addEventListener("click", (e) => goToRandom(link, e));
                 link_element.classList.add("clickable");
             }
