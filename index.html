@@ -175,9 +175,10 @@ SOFTWARE.
         }
 
 
-        /*we just need this around to hold some filters for us*/
+        /*we just need this around to hold some filters for us. can't display:none as that stops it working on FF*/
         #svg_filters {
-            display: none;
+            position: absolute;
+            height: 0;
         }
 
         .media {
@@ -356,6 +357,8 @@ SOFTWARE.
         page_div.style.top = `${(availableHeight - currentPageHeight * scale) / 2.0}px`;
     }
 
+
+    // TODO: can we replace this with https://gist.github.com/binarymax/0c12f01056c1ab947216c7d49ba58d72 ?
 
     // parse color, so we can manually set up the SVGs for tint rendering
     /**
