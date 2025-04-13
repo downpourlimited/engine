@@ -57,7 +57,10 @@ SOFTWARE.
         }
 
         body {
-            min-height: 100dvh;
+            display: flex;
+            height: 100dvh;
+            flex-direction: column;
+            justify-content: end;
         }
 
         *,
@@ -81,19 +84,22 @@ SOFTWARE.
             font-weight: normal;
         }
 
+        #page_wrapper {
+            width: 100%;
+            /* grow or shrink as necessary to fill the page */
+            flex: 1 1;
+            /* ignore height from child page when calculating flex size */
+            height: 0;
+        }
+
         #page {
-            position: relative;
-            width: fit-content;
+            flex: auto;
             transform-origin: top left;
 
             touch-action: manipulation;
         }
 
         #credits {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            left: 0;
             background-color: black;
             padding: 4px;
             font-family: 'IBM Plex Sans Condensed', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -172,7 +178,6 @@ SOFTWARE.
             font-style: italic;
         }
 
-
         /*we just need this around to hold some filters for us. can't display:none as that stops it working on FF*/
         #svg_filters {
             position: absolute;
@@ -240,7 +245,9 @@ SOFTWARE.
 </head>
 
 <body>
-    <div id="page">
+    <div id="page_wrapper">
+        <div id="page">
+        </div>
     </div>
 
     <div id="credits">
@@ -344,15 +351,13 @@ SOFTWARE.
 
 
     window.addEventListener("resize", setPageScale);
+    window.addEventListener("scroll", setPageScale); //to deal with dynamic viewport size
     function setPageScale() {
-        var htmlWidth = document.documentElement.clientWidth;
-        var htmlHeight = document.documentElement.clientHeight;
-        var availableHeight = htmlHeight - document.getElementById("credits").offsetHeight;
+        var page_wrapper_div = document.getElementById("page_wrapper");
         var page_div = document.getElementById("page");
-        var scale = Math.min(1, Math.min(htmlWidth / currentPageWidth, availableHeight / currentPageHeight));
-        page_div.style.transform = `scale(${scale})`;
-        page_div.style.left = `${(htmlWidth - currentPageWidth * scale) / 2.0}px`;
-        page_div.style.top = `${(availableHeight - currentPageHeight * scale) / 2.0}px`;
+        var scale = Math.min(1, Math.min(page_wrapper_div.offsetWidth / page_div.offsetWidth, page_wrapper_div.offsetHeight / page_div.offsetHeight));
+        page_div.style.scale = `${scale}`;
+        page_div.style.translate = `${(page_wrapper_div.offsetWidth - page_div.offsetWidth * scale) / 2.0}px ${(page_wrapper_div.offsetHeight - page_div.offsetHeight * scale) / 2.0}px`;
     }
 
 
@@ -816,7 +821,6 @@ SOFTWARE.
         if (!page) {
             return false;
         }
-
 
         if (page.bg_c) {
             document.body.style.background = page.bg_c;
