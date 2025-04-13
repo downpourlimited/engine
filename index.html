@@ -798,13 +798,27 @@ SOFTWARE.
         return `${window.location.origin}/comments/~${username}/${slug}/${comment_block_id}${iframe ? "/iframe" : ""}`;
     }
 
+    function minBy(array, pluck) {
+        return array.reduce((min, x) => min && pluck(min) <= pluck(x) ? min : x, null);
+    }
+
     function loadPage(pageId) {
         document.getElementById("svg_filters").innerHTML = ""; //clear old tint filters
 
         var page = data.pages.find(x => x.id === pageId);
+
+        // if we can't find it, check if it's been renamed
+        if (!page) {
+            let previously = data.pages.filter(p => p.prev_ids?.includes(pageId));
+            if (previously.length > 0) {
+                page = minBy(previously, p => p.prevIds?.indexOf(pageId));
+            }
+        }
+
         if (!page) {
             return false;
         }
+
 
         if (page.bg_c) {
             document.body.style.background = page.bg_c;
