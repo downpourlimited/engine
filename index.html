@@ -90,6 +90,8 @@ SOFTWARE.
             flex: 1 1;
             /* ignore height from child page when calculating flex size */
             height: 0;
+            /* allow mute button to be absolutely positioned within */
+            position: relative;
         }
 
         #page {
@@ -241,12 +243,69 @@ SOFTWARE.
             padding: 5%;
 
         }
+
+        #mute_button {
+            position: absolute;
+            right: 1em;
+            bottom: 1em;
+            width: 3em;
+            height: 3em;
+            border-radius: 1.5em;
+            border: 0;
+            opacity: .3;
+        }
+
+        #mute_button>*,
+        #mute_button svg {
+
+            width: 100%;
+            height: 100%;
+        }
+
+        .visually_hidden {
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            height: 1px;
+            overflow: hidden;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
+        }
     </style>
 </head>
 
 <body>
     <div id="page_wrapper">
         <div id="page">
+        </div>
+
+        <div>
+            <button id="mute_button" hidden>
+                <div id="mute_icon">
+                    <svg viewBox="0 0 246 246">
+                        <path d="M87.077,175.875c-0.358,-0.212 -0.582,-0.596 -0.589,-1.012c-0.007,-0.417 0.203,-0.808 0.554,-1.032l45.999,-29.383c0.383,-0.244 0.87,-0.252 1.26,-0.02c0.39,0.232 0.616,0.665 0.583,1.117c-2.235,33.233 -8.128,47.452 -8.128,47.452c-0.522,1.28 -1.576,2.27 -2.887,2.711c-1.311,0.442 -2.749,0.291 -3.939,-0.413l-32.853,-19.42Z" />
+                        <path d="M38.882,148.141c-0.347,0.221 -0.784,0.25 -1.157,0.074c-0.373,-0.175 -0.63,-0.53 -0.68,-0.939c-0.988,-8.088 -2.345,-20.58 -2.345,-28.215c0,-12.007 3.357,-36.023 3.357,-36.023c0.329,-2.345 2.333,-4.09 4.701,-4.096l16.143,-0.036l63.854,-36.149c1.274,-0.721 2.809,-0.816 4.162,-0.256c1.354,0.56 2.373,1.712 2.765,3.122c0,0 3.439,12.228 5.129,40.51c0.027,0.435 -0.184,0.85 -0.551,1.084l-95.378,60.924Z" />
+                        <path d="M167.127,123.232c0.033,-0.371 0.236,-0.706 0.549,-0.907c1.911,-1.22 8.812,-5.629 12.095,-7.726c0.365,-0.233 0.826,-0.251 1.208,-0.049c0.383,0.203 0.626,0.595 0.638,1.028c0.019,0.702 0.029,1.408 0.029,2.115c-0,20.773 -8.358,39.61 -21.892,53.327c-2.766,2.804 -7.288,2.834 -10.092,0.068c-2.804,-2.766 -2.834,-7.288 -0.068,-10.092c9.774,-9.906 16.225,-23.1 17.533,-37.764Z" />
+                        <path d="M152.451,75.598c-0.291,0.186 -0.647,0.237 -0.979,0.142c-0.331,-0.096 -0.606,-0.329 -0.753,-0.641c-1.28,-2.793 -0.662,-6.212 1.754,-8.353c2.948,-2.613 7.462,-2.341 10.074,0.607l0.086,0.097c0.232,0.263 0.338,0.614 0.289,0.961c-0.049,0.347 -0.247,0.656 -0.542,0.845l-9.929,6.342Z" />
+                        <path d="M209.797,95.42c0.338,-0.216 0.76,-0.249 1.127,-0.089c0.366,0.16 0.629,0.493 0.7,0.886c1.192,6.708 1.815,13.613 1.815,20.661c-0,32.12 -12.923,61.245 -33.85,82.455c-2.766,2.803 -7.288,2.834 -10.092,0.067c-2.804,-2.766 -2.834,-7.288 -0.068,-10.092c18.383,-18.631 29.737,-44.215 29.737,-72.43c0,-4.768 -0.324,-9.462 -0.952,-14.059l11.583,-7.399Z" />
+                        <path d="M191.8,48.972c0.189,0.268 0.261,0.602 0.198,0.924c-0.063,0.322 -0.255,0.604 -0.532,0.78l-10.019,6.401c-0.538,0.343 -1.251,0.206 -1.622,-0.313c-2.059,-2.865 -4.262,-5.62 -6.597,-8.254c-2.612,-2.948 -2.34,-7.462 0.607,-10.074c2.948,-2.613 7.462,-2.341 10.074,0.607c2.803,3.162 5.438,6.477 7.891,9.929Z" />
+                        <path d="M30.792,192.825c-4.425,2.827 -10.313,1.529 -13.14,-2.897c-2.827,-4.426 -1.529,-10.314 2.896,-13.141l194.42,-124.186c4.425,-2.827 10.313,-1.529 13.14,2.896c2.827,4.426 1.529,10.314 -2.896,13.141l-194.42,124.187Z" />
+                    </svg>
+                    <span class="visually_hidden">Mute</span>
+                </div>
+                <div id="unmute_icon" hidden>
+                    <svg viewBox="0 0 246 246" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+                        <g id="unmuted">
+                            <path d="M42.768,83.7c0,-0 -3.31,23.574 -3.31,35.361c-0,11.789 3.31,35.375 3.31,35.375l17.391,-0l0,-70.775l-17.391,0.039Z" style="stroke:#000;stroke-width:9.52px;" />
+                            <path d="M60.159,83.661l64.94,-36.764c-0,0 5.871,21.132 5.871,72.151c0,51.02 -8.619,72.152 -8.619,72.152l-62.192,-36.764" style="stroke:#000;stroke-width:9.52px;" />
+                            <path d="M157.207,72.086c10.764,12.145 17.302,28.119 17.302,45.607c0,18.821 -7.573,35.887 -19.835,48.315" style="fill:none;stroke:#000;stroke-width:14.27px;" />
+                            <path d="M178.569,43.776c17.253,19.467 27.733,45.07 27.733,73.102c0,30.168 -12.138,57.522 -31.793,77.443" style="fill:none;stroke:#000;stroke-width:14.27px;" />
+                        </g>
+                    </svg>
+
+                    <span class="visually_hidden">Unmute</span>
+                </div>
+            </button>
         </div>
     </div>
 
@@ -258,6 +317,7 @@ SOFTWARE.
                         <path fill="currentColor" d="m12.991 10.256v9.428c-0 8e-3 -0 0.017-1e-3 0.025-0 0-0.034 0.61 0.142 1.091 0.064 0.172 0.14 0.353 0.339 0.346 0.142-5e-3 0.251-0.03 0.331-0.088 0.122-0.089 0.161-0.24 0.191-0.402 0.055-0.297 0.042-0.638 0.039-0.953-3e-3 -0.276 0.219-0.502 0.495-0.505s0.502 0.219 0.505 0.495c4e-3 0.378 0.01 0.787-0.056 1.144-0.078 0.428-0.259 0.79-0.582 1.027-0.217 0.159-0.502 0.268-0.888 0.282-0.68 0.023-1.097-0.416-1.312-1.002-0.221-0.601-0.207-1.351-0.203-1.467l5e-3 -9.438c-1e-3 -0.034-0-0.117-0.045-0.155-0.049-0.042-0.151-0.027-0.153-0.026-0.651 0.064-1.199 0.218-1.798 0.421-0.623 0.212-1.243 0.472-1.912 0.725-0.025 0.01-0.052 0.017-0.078 0.023-0.157 0.031-0.319-0.014-0.437-0.121-1.082-0.988-2.306-0.847-3.256-0.475-1.013 0.395-1.739 1.052-1.739 1.052-0.147 0.134-0.36 0.168-0.542 0.086s-0.297-0.264-0.294-0.464c-0 0 0.044-3.142 2.33-5.642 1.459-1.596 3.833-2.948 7.72-3.008 0.109-2e-3 0.196-0.091 0.196-0.2v-0.638c-0-0.276 0.224-0.5 0.5-0.5s0.5 0.224 0.5 0.5v0.675c1e-3 0.089 0.072 0.161 0.161 0.162 3.908 0.053 6.292 1.409 7.756 3.009 2.286 2.5 2.33 5.642 2.33 5.642 3e-3 0.2-0.113 0.382-0.294 0.464-0.182 0.082-0.395 0.048-0.542-0.086-0-0-0.726-0.657-1.739-1.052-0.951-0.372-2.174-0.513-3.257 0.475-0.118 0.107-0.28 0.152-0.436 0.121-0.027-6e-3 -0.054-0.013-0.08-0.024-0.648-0.248-1.148-0.569-1.653-0.749-0.582-0.207-1.131-0.305-1.681-0.365l-0.344-0.031c-0.056-5e-3 -0.111 0.013-0.153 0.051-0.041 0.038-0.065 0.091-0.065 0.147zm-2.599-6.512c-2.696 0.307-4.449 1.355-5.582 2.594-1.226 1.34-1.725 2.887-1.928 3.897 0.305-0.186 0.669-0.379 1.071-0.536 0.992-0.387 2.205-0.56 3.375 0.028 0.034-1.842 0.919-4.215 3.064-5.983zm7.257 5.983c1.17-0.588 2.383-0.415 3.375-0.028 0.402 0.157 0.766 0.35 1.072 0.537-0.204-1.011-0.704-2.558-1.929-3.898-1.133-1.239-2.886-2.287-5.583-2.594 2.146 1.768 3.031 4.141 3.065 5.983zm-5.161-6.191c-0.025 0.021-0.054 0.041-0.084 0.057-2.986 1.617-4.135 4.39-4.08 6.349 0.814-0.389 2.294-0.939 4.164-0.939 2.008-0 3.394 0.507 4.165 0.898 0.038-1.957-1.115-4.703-4.08-6.308-0.031-0.016-0.059-0.036-0.085-0.057zm-6.017 9.439c1.013 1.684 1.843 2.544 1.854 4.139 0.011 1.7-1.289 2.399-2.395 2.378-1.103-0.021-2.27-0.794-2.26-2.469 5e-3 -0.817 0.238-1.433 0.623-2.076 0.339-0.567 0.807-1.159 1.327-1.981l0.433-0.685 0.418 0.694zm-0.277 1.43c-0.036-0.055-0.098-0.089-0.164-0.09-0.067-0-0.129 0.032-0.167 0.087-0.272 0.389-0.514 0.728-0.712 1.059-0.291 0.486-0.477 0.949-0.481 1.569-6e-3 0.972 0.639 1.45 1.279 1.462 0.637 0.012 1.382-0.393 1.376-1.371-6e-3 -0.8-0.278-1.37-0.671-2.005-0.14-0.227-0.295-0.46-0.46-0.711zm13.533-1.468c1.323 1.797 1.949 2.567 1.959 4.177 0.011 1.7-1.288 2.399-2.394 2.378-1.104-0.021-2.27-0.794-2.26-2.469 5e-3 -0.813 0.241-1.444 0.615-2.091 0.331-0.574 0.778-1.165 1.247-1.954l0.386-0.648 0.447 0.607zm-0.196 1.412c-0.039-0.052-0.101-0.082-0.166-0.08s-0.125 0.035-0.161 0.09c-0.259 0.388-0.495 0.733-0.691 1.072-0.286 0.496-0.477 0.975-0.481 1.599-6e-3 0.972 0.638 1.45 1.279 1.462 0.636 0.012 1.382-0.393 1.375-1.371-7e-3 -1.124-0.403-1.756-1.155-2.772z" />
                     </g>
                 </svg>
+                <span class="visually_hidden">downpour.games</span>
             </a>
         </div>
 
@@ -267,11 +327,13 @@ SOFTWARE.
                 <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 -960 960 960" title="Restart game">
                     <path fill="currentColor" d="M480-80q-75 0-140.5-28T225-185q-49-49-77-114.5T120-440q0-13 8.5-21.5T150-470q13 0 21.5 8.5T180-440q0 125 87.5 212.5T480-140q125 0 212.5-87.5T780-440q0-125-85-212.5T485-740h-22l52 52q9 9 9 21t-9 21q-9 9-21 9t-21-9L368-751q-9-9-9-21t9-21l106-106q8-8 20.5-8t20.5 8q8 8 8 20.5t-8 20.5l-58 58h23q75 0 140.5 28T735-695q49 49 77 114.5T840-440q0 75-28 140.5T735-185q-49 49-114.5 77T480-80Z" />
                 </svg>
+                <span class="visually_hidden">Replay</span>
             </a>
 
         </div>
 
         <div id="author"><a href="/~{{author_username}}" rel="author"><span id="game-author"><span class="displayname">{{author_displayname}}</span> <span class="username">~{{author_username}}</span></span></a></div>
+
     </div>
 
     <svg id="svg_filters">
@@ -359,6 +421,20 @@ SOFTWARE.
         page_div.style.scale = `${scale}`;
         page_div.style.translate = `${(page_wrapper_div.offsetWidth - page_div.offsetWidth * scale) / 2.0}px ${(page_wrapper_div.offsetHeight - page_div.offsetHeight * scale) / 2.0}px`;
     }
+
+
+    const muteButton = document.getElementById("mute_button");
+    let muted = true;
+    let muteableLinksShown = false;
+    muteButton.addEventListener("click", (ev) => {
+        muted = !muted;
+
+        for (const video of document.querySelectorAll("video")) {
+            video.muted = muted;
+        }
+
+        showMuteButton(muted);
+    });
 
 
     // TODO: can we replace this with https://gist.github.com/binarymax/0c12f01056c1ab947216c7d49ba58d72 ?
@@ -664,6 +740,79 @@ SOFTWARE.
                 media_element.style.borderRadius = `${link.image.b_radius - (link.image.b_width ?? 0)}px`;
             }
         }
+        else if (link.type === "video") {
+
+            //add image properties to dataset, so CSS can pick it up
+            const ignored_keys = [];
+            for (const [key, val] of Object.entries(link.image)) {
+                if (!ignored_keys.includes(key)) {
+                    link_element.dataset[key] = val;
+                }
+            }
+
+            //render the image
+            let asset = data.assets.find(a => a.id === link.image.asset_id);
+
+
+            // <video controls crossorigin=anonymous class="screenshot" poster="https://downpour-static.b-cdn.net/landing/kiss_the_frog_cover.png" onplay="fathom.trackEvent('play_vid');">
+            //     <source src="https://downpour-static.b-cdn.net/landing/kiss_the_frog_web.webm" type="video/webm">
+            //     <source src="https://downpour-static.b-cdn.net/landing/kiss_the_frog_web.mp4" type="video/mp4">
+            //     <track kind="captions" srclang="en" src="https://downpour-static.b-cdn.net/landing/kiss_the_frog.vtt">
+            //     <p>
+            //         Your browser doesn't support HTML video. Here is a
+            //         <a href="https://downpour-static.b-cdn.net/landing/kiss_the_frog_web.mp4" download="downpour_kiss_the_frog.mp4">link to the video</a> instead.
+            //     </p>
+            // </video>
+
+
+            let media_element = document.createElement("video");
+            media_element.autoplay = true;
+            media_element.controls = false;
+            media_element.crossOrigin = "anonymous";
+            media_element.loop = true;
+            media_element.muted = muted;
+            media_element.playsInline = true;
+
+            muteableLinksShown = true;
+
+            media_element.classList.add("link-asset");
+            media_element.draggable = false;
+            if (LOCAL) {
+                media_element.src = "media/" + asset.path;
+            }
+            else {
+                media_element.src = asset.url;
+            }
+            link_element.appendChild(media_element);
+
+            var filter = "";
+
+            //set up tint magic
+            let parsedColor = parseColor(link.image.bg_c);
+            if (parsedColor.alpha > 0.001) {
+                let tint_id = makeTintFilter(parsedColor);
+                filter += ` url(#${tint_id})`;
+            }
+
+            if (link.image.blur > 0.001) {
+                var smaller_axis = Math.min(link.w, link.h);
+                //0.5 to match Flutter, visually
+                filter += ` blur(${smaller_axis * link.image.blur * 0.5}px)`;
+            }
+            link_element.style.filter = filter;
+
+            if (link.image.b_width > 0.001) {
+                link_element.style.borderWidth = `${link.image.b_width}px`;
+                link_element.style.borderStyle = "solid";
+                link_element.style.borderColor = link.image.b_c;
+
+            }
+
+            if (link.image.b_radius > 0.001) {
+                link_element.style.borderRadius = `${link.image.b_radius}px`;
+                media_element.style.borderRadius = `${link.image.b_radius - (link.image.b_width ?? 0)}px`;
+            }
+        }
         else if (link.type === "empty") {
 
             //add image properties to dataset, so CSS can pick it up
@@ -822,6 +971,8 @@ SOFTWARE.
             return false;
         }
 
+        muteableLinksShown = false;
+
         if (page.bg_c) {
             document.body.style.background = page.bg_c;
         }
@@ -884,6 +1035,13 @@ SOFTWARE.
             page_div.appendChild(link_element);
         }
 
+        if (muteableLinksShown) {
+            showMuteButton(muted);
+        }
+        else {
+            hideMuteButton();
+        }
+
         window.scrollTo(0, 0);
 
         // window.addEventListener('load', (event) => {
@@ -892,6 +1050,29 @@ SOFTWARE.
         return true;
     }
 
+
+
+    function showMuteButton(currentlyMuted) {
+
+        muteButton.hidden = false;
+
+        const muteIcon = document.getElementById("mute_icon");
+        const unmuteIcon = document.getElementById("unmute_icon");
+
+        if (currentlyMuted) {
+            muteIcon.hidden = false;
+            unmuteIcon.hidden = true;
+        }
+        else {
+            muteIcon.hidden = true;
+            unmuteIcon.hidden = false;
+        }
+    }
+
+    function hideMuteButton() {
+
+        muteButton.hidden = true;
+    }
 
     /**
      * Go to page
