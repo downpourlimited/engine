@@ -276,10 +276,10 @@ let data = {
                     "image": {
                         "asset_id": "a-vid",
                         "b_c": "#d03100ff",
-                        "b_width": 0,
+                        "b_width": 4,
                         "bg_c": "#8400b1ff",
-                        "b_radius": 0,
-                        "blur": 0
+                        "b_radius": 20,
+                        "blur": 0.03
                     }
                 }
             ]

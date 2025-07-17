@@ -244,6 +244,22 @@ SOFTWARE.
 
         }
 
+        .link-with-error {
+
+            background-color: #fff0f0;
+            color: #833535;
+        }
+
+        .link-error {
+
+            font-family: 'IBM Plex Sans Condensed', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-align: center;
+            height: 100%;
+            padding: 5%;
+            border-radius: inherit;
+
+        }
+
         #mute_button {
             position: absolute;
             right: 1em;
@@ -750,20 +766,8 @@ SOFTWARE.
                 }
             }
 
-            //render the image
+            //render the video
             let asset = data.assets.find(a => a.id === link.image.asset_id);
-
-
-            // <video controls crossorigin=anonymous class="screenshot" poster="https://downpour-static.b-cdn.net/landing/kiss_the_frog_cover.png" onplay="fathom.trackEvent('play_vid');">
-            //     <source src="https://downpour-static.b-cdn.net/landing/kiss_the_frog_web.webm" type="video/webm">
-            //     <source src="https://downpour-static.b-cdn.net/landing/kiss_the_frog_web.mp4" type="video/mp4">
-            //     <track kind="captions" srclang="en" src="https://downpour-static.b-cdn.net/landing/kiss_the_frog.vtt">
-            //     <p>
-            //         Your browser doesn't support HTML video. Here is a
-            //         <a href="https://downpour-static.b-cdn.net/landing/kiss_the_frog_web.mp4" download="downpour_kiss_the_frog.mp4">link to the video</a> instead.
-            //     </p>
-            // </video>
-
 
             let media_element = document.createElement("video");
             media_element.autoplay = true;
@@ -783,24 +787,37 @@ SOFTWARE.
             else {
                 media_element.src = asset.url;
             }
-            link_element.appendChild(media_element);
+            //unlike images, videos won't load over a file url. so we want to show an error instead
+            if (URL.parse(media_element.src).protocol != "file:") {
+                link_element.appendChild(media_element);
 
-            var filter = "";
 
-            //set up tint magic
-            let parsedColor = parseColor(link.image.bg_c);
-            if (parsedColor.alpha > 0.001) {
-                let tint_id = makeTintFilter(parsedColor);
-                filter += ` url(#${tint_id})`;
+                var filter = "";
+
+                //we don't want to tint or blur the error message
+                let parsedColor = parseColor(link.image.bg_c);
+                if (parsedColor.alpha > 0.001) {
+                    let tint_id = makeTintFilter(parsedColor);
+                    filter += ` url(#${tint_id})`;
+                }
+
+                if (link.image.blur > 0.001) {
+                    var smaller_axis = Math.min(link.w, link.h);
+                    //0.5 to match Flutter, visually
+                    filter += ` blur(${smaller_axis * link.image.blur * 0.5}px)`;
+                }
+                link_element.style.filter = filter;
+
+            }
+            else {
+                let error_element = document.createElement("div");
+                error_element.innerText = "Error: Video cannot be displayed when running Downpour games from the file system. It'll work when you put the game online, though.";
+                error_element.classList.add("link-error");
+                link_element.classList.add("link-with-error");
+                link_element.appendChild(error_element);
             }
 
-            if (link.image.blur > 0.001) {
-                var smaller_axis = Math.min(link.w, link.h);
-                //0.5 to match Flutter, visually
-                filter += ` blur(${smaller_axis * link.image.blur * 0.5}px)`;
-            }
-            link_element.style.filter = filter;
-
+            // we want to show the border and border radius no matter if we're displaying the video or an error message
             if (link.image.b_width > 0.001) {
                 link_element.style.borderWidth = `${link.image.b_width}px`;
                 link_element.style.borderStyle = "solid";
@@ -812,6 +829,7 @@ SOFTWARE.
                 link_element.style.borderRadius = `${link.image.b_radius}px`;
                 media_element.style.borderRadius = `${link.image.b_radius - (link.image.b_width ?? 0)}px`;
             }
+
         }
         else if (link.type === "empty") {
 
