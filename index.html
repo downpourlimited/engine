@@ -441,7 +441,7 @@ SOFTWARE.
 
     const muteButton = document.getElementById("mute_button");
     let muted = true;
-    let muteableLinksShown = false;
+    let muteable_links_shown = false;
     muteButton.addEventListener("click", (ev) => {
         muted = !muted;
 
@@ -769,15 +769,39 @@ SOFTWARE.
             //render the video
             let asset = data.assets.find(a => a.id === link.image.asset_id);
 
+            let loop_setting = link.video.repeat; // "loop", "once" or "goTo"
+            let volume_setting = link.video.volume; // 0 - 1
+            let speed_setting = link.video.speed; // 0.1 - 4
+
             let media_element = document.createElement("video");
             media_element.autoplay = true;
             media_element.controls = false;
             media_element.crossOrigin = "anonymous";
-            media_element.loop = true;
+            media_element.loop = loop_setting == "loop";
+            media_element.volume = volume_setting;
+            media_element.playbackRate = speed;
             media_element.muted = muted;
             media_element.playsInline = true;
 
-            muteableLinksShown = true;
+            if (volume_setting > 0) {
+                muteable_links_shown = true;
+            }
+
+            if (loop_setting == "goTo") {
+                media_element.addEventListener("ended", (e) => {
+                    var auto_to_setting = link.video.auto_to;
+                    if (auto_to_setting.startsWith("#")) {
+                        let stripped_to = link.to.substring(1);
+
+                        goToPage(stripped_to, e);
+                    }
+                    else if (auto_to_setting == "!random") {
+                        goToRandom(link.video.auto_random_to, e);
+                    }
+                    else if (!auto_to_setting.startsWith("!"))
+                        location = auto_to_setting;
+                });
+            }
 
             media_element.classList.add("link-asset");
             media_element.draggable = false;
@@ -989,7 +1013,7 @@ SOFTWARE.
             return false;
         }
 
-        muteableLinksShown = false;
+        muteable_links_shown = false;
 
         if (page.bg_c) {
             document.body.style.background = page.bg_c;
@@ -1017,7 +1041,7 @@ SOFTWARE.
                 link_element.style.cursor = "default";
             }
             else if (link.to == "!random") {
-                link_element.addEventListener("click", (e) => goToRandom(link, e));
+                link_element.addEventListener("click", (e) => goToRandom(link.randomTo, e));
                 link_element.classList.add("clickable");
             }
             else if (link.to == "!blocker") {
@@ -1053,7 +1077,7 @@ SOFTWARE.
             page_div.appendChild(link_element);
         }
 
-        if (muteableLinksShown) {
+        if (muteable_links_shown) {
             showMuteButton(muted);
         }
         else {
@@ -1108,11 +1132,7 @@ SOFTWARE.
         // window.open(to, "_self");
     }
 
-    function goToRandom(link, event) {
-        console.log("go to random", link);
-
-
-        let randomTo = link.randomTo;
+    function goToRandom(randomTo, event) {
 
         if (randomTo == null || randomTo.length == 0) {
             console.log("go to random page, but no random page options");
