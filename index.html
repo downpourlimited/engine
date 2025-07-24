@@ -779,7 +779,7 @@ SOFTWARE.
             media_element.crossOrigin = "anonymous";
             media_element.loop = loop_setting == "loop";
             media_element.volume = volume_setting;
-            media_element.playbackRate = speed;
+            media_element.playbackRate = speed_setting;
             media_element.muted = muted;
             media_element.playsInline = true;
 
@@ -791,7 +791,7 @@ SOFTWARE.
                 media_element.addEventListener("ended", (e) => {
                     var auto_to_setting = link.video.auto_to;
                     if (auto_to_setting.startsWith("#")) {
-                        let stripped_to = link.to.substring(1);
+                        let stripped_to = link.video.auto_to.substring(1);
 
                         goToPage(stripped_to, e);
                     }
@@ -799,7 +799,7 @@ SOFTWARE.
                         goToRandom(link.video.auto_random_to, e);
                     }
                     else if (!auto_to_setting.startsWith("!"))
-                        location = auto_to_setting;
+                        window.location = auto_to_setting;
                 });
             }
 
