@@ -2,7 +2,7 @@
 <html lang="en">
 
 <!--
-    Downpour HTML engine, for rendering Downpour games that are using v17 of the data format
+    Downpour HTML engine, for rendering Downpour games that are using v18 of the data format
 
 License below applies to everything except the contents of the `data` variable. That belongs to the user.
 
@@ -360,8 +360,8 @@ SOFTWARE.
 <script src="data.js"></script>
 <script type="text/javascript">
 
-    if (data.format_version != 17) {
-        console.error(`Trying to load gameplay data with version ${data.format_version}, which is not 17`);
+    if (data.format_version != 18) {
+        console.error(`Trying to load gameplay data with version ${data.format_version}, which is not 18`);
     }
 
     const LOCAL = true;
