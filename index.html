@@ -330,7 +330,7 @@ SOFTWARE.
         <div class="downpour-icon">
 
 
-            <a href="https://downpour.games">
+            <a href="https://downpour.games" >
 
 
                 <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" version="1.1" viewBox="0 0 25 25" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" title="downpour.games">
@@ -738,7 +738,7 @@ SOFTWARE.
                 media_element.classList.add("link-asset");
                 media_element.draggable = false;
                 if (LOCAL) {
-                    media_element.src = "media/" + asset.path;
+                    media_element.src = "media/" + encodeURIComponent(asset.path);
                 }
                 else {
                     media_element.src = asset.url;
@@ -814,7 +814,7 @@ SOFTWARE.
                         else if (auto_to_setting == "!random") {
                             goToRandom(link.video.auto_random_to, e);
                         }
-                        else if (!auto_to_setting.startsWith("!"))
+                        else if (!auto_to_setting.startsWith("!") && isValidTo(auto_to_setting))
                             window.location = auto_to_setting;
                     });
                 }
@@ -822,7 +822,7 @@ SOFTWARE.
                 media_element.classList.add("link-asset");
                 media_element.draggable = false;
                 if (LOCAL) {
-                    media_element.src = "media/" + asset.path;
+                    media_element.src = "media/" + encodeURIComponent(asset.path);
                 }
                 else {
                     media_element.src = asset.url;
@@ -933,7 +933,7 @@ SOFTWARE.
                 //unless it has an ital (or slnt) axis, apply italics the old fashioned way
                 if (!["Anybody", "Gluten", "Recursive"].includes(link.text.font)) {
                     //if it's set & over 0.5, make it italic, else normal
-                    text_element.style.fontStyle = link.text["ital"] ?? 0 > 0.5 ? "italic" : "normal";
+                    text_element.style.fontStyle = (link.text["ital"] ?? 0) > 0.5 ? "italic" : "normal";
                 }
 
                 //font variation axes, and their defaults
@@ -942,7 +942,7 @@ SOFTWARE.
                 text_element.style.fontVariationSettings = Object.keys(axes).map((a) => `'${a}' ${link.text[a] ?? axes[a]}`).join(", ");
 
                 text_element.style.letterSpacing = `${link.text.spacing ?? 0}em`;
-                text_element.style.transform = `translate(${link.text.spacing * 0.5 ?? 0}em,0px)`;
+                text_element.style.transform = `translate(${(link.text.spacing ?? 0) * 0.5}em,0px)`;
 
 
                 let shadows = [];
@@ -1008,6 +1008,18 @@ SOFTWARE.
             return `${window.location.origin}/comments/~${username}/${slug}/${comment_block_id}${iframe ? "/iframe" : ""}`;
         }
 
+        // mirrors the app's ToType.getFromTo (lib/gamedata/link.dart): anything else is invalid and goes nowhere
+        function isValidTo(to) {
+            if (to.startsWith("#") || to == "!random" || to == "!blocker") return true;
+            if (/^https?:\/\/(downpour\.games|gordon:\d+|staging\.downpour\.games)\/~[A-Za-z0-9][A-Za-z0-9_\-]{0,29}(\/[A-Za-z0-9\-]+|\/?$)/.test(to)) return true;
+            try {
+                const url = new URL(to);
+                return url.protocol.startsWith("http") && /\w+\.\w+/.test(url.hostname);
+            } catch {
+                return false;
+            }
+        }
+
         function minBy(array, pluck) {
             return array.reduce((min, x) => min && pluck(min) <= pluck(x) ? min : x, null);
         }
@@ -1021,7 +1033,7 @@ SOFTWARE.
             if (!page) {
                 let previously = data.pages.filter(p => p.prev_ids?.includes(pageId));
                 if (previously.length > 0) {
-                    page = minBy(previously, p => p.prevIds?.indexOf(pageId));
+                    page = minBy(previously, p => p.prev_ids.indexOf(pageId));
                 }
             }
 
@@ -1063,8 +1075,11 @@ SOFTWARE.
                 else if (link.to == "!blocker") {
                     // do nothing, but block clicks
                 }
-                else if (link.to === null || link.to === "") {
-                    //doesn't link anywhere, doesn't block clicks
+                else if (!link.to || !isValidTo(link.to)) {
+                    //doesn't link anywhere, doesn't block clicks. like the app, an invalid destination counts as nowhere
+                    if (link.to) {
+                        console.log(`link on page ${pageId} has invalid destination ${link.to}: it goes nowhere`);
+                    }
                     link_element.style.pointerEvents = "none";
                 }
                 else {
@@ -1153,11 +1168,14 @@ SOFTWARE.
         function goToPage(to) {
             console.log("go to page", to);
 
+            // only add a history entry if the page exists, so Back never lands on a dead entry
+            if (!loadPage(to)) {
+                console.log("can't go to page", to, "- has it been deleted?");
+                return;
+            }
             const url = new URL(location);
             url.searchParams.set("p", to);
             history.pushState({}, "", url);
-
-            loadPage(to);
             // window.open(to, "_self");
         }
 
@@ -1178,13 +1196,14 @@ SOFTWARE.
                 var rand = Math.random() * cum;
                 for (var i = 0; i < randomTo.length; i++) {
                     if (weights[i] >= rand) {
-                        if (randomTo[i].to.startsWith("#")) {
-                            let strippedTo = randomTo[i].to.substring(1);
-                            goToPage(strippedTo);
+                        const to = randomTo[i].to;
+                        if (to?.startsWith("#")) {
+                            goToPage(to.substring(1));
                         }
-                        else {
-                            window.open(randomTo[i].to, "_self");
+                        else if (to && !to.startsWith("!") && isValidTo(to)) {
+                            window.open(to, "_self");
                         }
+                        // otherwise it goes nowhere, like the app (random can't contain random)
                         return;
                     }
                 }
@@ -1221,7 +1240,7 @@ SOFTWARE.
                     listeners.push(listen(preloaded[asset.id], "load"));
 
                     if (LOCAL) {
-                        preloaded[asset.id].src = "media/" + asset.path;
+                        preloaded[asset.id].src = "media/" + encodeURIComponent(asset.path);
                     }
                     else {
                         preloaded[asset.id].src = asset.url;
@@ -1244,7 +1263,7 @@ SOFTWARE.
                         listeners.push(listen(preloaded[asset.id], "load"));
 
                         if (LOCAL) {
-                            preloaded[asset.id].src = "media/" + asset.path;
+                            preloaded[asset.id].src = "media/" + encodeURIComponent(asset.path);
                         }
                         else {
                             preloaded[asset.id].src = asset.url;
