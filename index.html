@@ -1011,7 +1011,7 @@ SOFTWARE.
         // mirrors the app's ToType.getFromTo (lib/gamedata/link.dart): anything else is invalid and goes nowhere
         function isValidTo(to) {
             if (to.startsWith("#") || to == "!random" || to == "!blocker") return true;
-            if (/^https?:\/\/(downpour\.games|gordon:\d+|staging\.downpour\.games)\/~[A-Za-z0-9][A-Za-z0-9_\-]{0,29}(\/[A-Za-z0-9\-]+|\/?$)/.test(to)) return true;
+            if (/^https?:\/\/(downpour\.games|staging\.downpour\.games)\/~[A-Za-z0-9][A-Za-z0-9_\-]{0,29}(\/[A-Za-z0-9\-]+|\/?$)/.test(to)) return true;
             try {
                 const url = new URL(to);
                 return url.protocol.startsWith("http") && /\w+\.\w+/.test(url.hostname);
@@ -1078,7 +1078,7 @@ SOFTWARE.
                 else if (!link.to || !isValidTo(link.to)) {
                     //doesn't link anywhere, doesn't block clicks. like the app, an invalid destination counts as nowhere
                     if (link.to) {
-                        console.log(`link on page ${pageId} has invalid destination ${link.to}: it goes nowhere`);
+                        console.log(`link on page ${pageId} has invalid destination ${link.to}`);
                     }
                     link_element.style.pointerEvents = "none";
                 }
@@ -1093,7 +1093,7 @@ SOFTWARE.
                     }
                     else {
                         if (KIOSK_MODE && TAG) {
-                            const internalMatch = link.to.match(/^https?:\/\/(downpour\.games|gordon:\d+|staging\.downpour\.games)\/~(?<username>[A-Za-z0-9][A-Za-z0-9_\-]{0,29})\/(?<slug>[A-Za-z0-9\-]+)\/?/);
+                            const internalMatch = link.to.match(/^https?:\/\/(downpour\.games|staging\.downpour\.games)\/~(?<username>[A-Za-z0-9][A-Za-z0-9_\-]{0,29})\/(?<slug>[A-Za-z0-9\-]+)\/?/);
                             if (internalMatch != null) {
                                 link_element.href = "https://" + new URL(link.to).host + "/eventkiosk/" +
                                     TAG + "/~" + internalMatch.groups["username"] + "/" + internalMatch.groups["slug"];
@@ -1170,7 +1170,7 @@ SOFTWARE.
 
             // only add a history entry if the page exists, so Back never lands on a dead entry
             if (!loadPage(to)) {
-                console.log("can't go to page", to, "- has it been deleted?");
+                console.log("can't go to page", to, "- probably deleted");
                 return;
             }
             const url = new URL(location);
@@ -1203,7 +1203,7 @@ SOFTWARE.
                         else if (to && !to.startsWith("!") && isValidTo(to)) {
                             window.open(to, "_self");
                         }
-                        // otherwise it goes nowhere, like the app (random can't contain random)
+                        // otherwise it goes nowhere (random can't contain random)
                         return;
                     }
                 }
